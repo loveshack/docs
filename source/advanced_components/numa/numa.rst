@@ -88,7 +88,7 @@ By default VMs will take a number of sockets equal to the ``VCPU`` attribute wit
 +--------------------+---------------------------------------------------------------------+
 | HUGEPAGE_SIZE      | Size of the hugepages (MB). If not defined no hugepages will be used|
 +--------------------+---------------------------------------------------------------------+
-| MEMORY_MAPPING     | Control if the memory is to be mapped ``shared`` or ``private``     |
+| MEMORY_ACCESS      | Control if the memory is to be mapped ``shared`` or ``private``     |
 +--------------------+---------------------------------------------------------------------+
 
 The pinning policy defines how the VCPU are pinned to the hypervisor CPUs. When using the ``CORE`` policy each VCPU will be assigned to a whole core. No other threads in that core will be used. The ``THREAD`` policy assigns each VCPU to a hypervisor CPU thread. Finally, you can share all the assigned hypervisor threads between the VM VCPUS with the ``SHARED`` policy.
