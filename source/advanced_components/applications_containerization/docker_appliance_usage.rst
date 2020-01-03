@@ -5,22 +5,22 @@
 Docker Appliance Usage
 =========================================================
 
-In order to use the Docker Appliance it is needed to have the appliance configured at the OpenNebula installation. You can find more info at :ref:`Docker Appliance Configuration <docker_appliance_configuration>`.
+In order to use the Docker Appliance it is necessary to have the appliance configured on the OpenNebula installation. You can find more info at :ref:`Docker Appliance Configuration <docker_appliance_configuration>`.
 
-Step 1 - Instantiate the template
+Step 1 — Instantiate the template
 =========================================================
 
 First of all you need to identify the template. The default name is ``Ubuntu 16.04 with Docker``.
 
-Then you just need to instantiate it and wait for it to be in ``running`` state.
+Then you just need to instantiate it and wait for it to be in the ``running`` state.
 
 |vm-running|
 
 
-Step 2 - Running Hello World
+Step 2 — Running Hello World
 =========================================================
 
-Once the VM is running you can connect over SSH or VNC. You can run the docker "Hello world" and make sure every thing it's running well.
+Once the VM is running, you can connect over SSH or VNC. You can run the docker "Hello world" and make sure everything is running well.
 
 .. prompt:: bash # auto
 
@@ -43,7 +43,7 @@ Now you can see the "hello-world" image has been included in your images:
       REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
       hello-world         latest              f2a91732366c        4 months ago        1.85kB
 
-You can also see the container using the -a option (for show all the containers, including the ones that are not running):
+You can also see the container using the ``-a`` option (for show all the containers, including the ones that are not running):
 
 .. prompt:: bash # auto
 
@@ -52,7 +52,7 @@ You can also see the container using the -a option (for show all the containers,
       3a0189f6b0af        hello-world         "/hello"            9 minutes ago       Exited (0) 9 minutes ago                       flamboyant_mirzakhani
 
 
-Step 3 - Update the Docker Version
+Step 3 — Update the Docker Version
 =========================================================
 
 You can check your Docker version:
@@ -80,14 +80,14 @@ You can check your Docker version:
         OS/Arch:	    linux/amd64
         Experimental:	false
 
-And update it using the OS packages manager:
+And update it using the OS package manager:
 
 .. prompt:: bash # auto
 
     # root@ubuntu:~#apt-get update
     # root@ubuntu:~#apt-get upgrade
 
-Step 4 - Update a Docker Image
+Step 4 — Update a Docker Image
 =========================================================
 
 You can get an existing image and change it:
@@ -113,10 +113,10 @@ You can get an existing image and change it:
       one/ubuntu-with-ruby   latest              eefdc54faeb5        22 seconds ago      79.6MB
 
 
-Step 5 - Save the Image
+Step 5 — Save the Image
 =========================================================
 
-If you want to save changes like the ones performed in Step 3 and Step 4, the disk saveas functionality can be used to save this image as a new one. This option is available at the storage tab of the VM, this will automatically create a new image with the performed changes.
+If you want to save changes like the ones performed in Step 3 and Step 4, the disk ``saveas`` functionality can be used to save this image as a new one. This option is available in the storage tab of the VM, and will automatically create a new image with the changes made.
 
 |disk-saveas|
 

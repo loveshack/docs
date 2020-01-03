@@ -9,11 +9,11 @@ The OneGate service allows Virtual Machine guests to pull and push VM informatio
 Requirements
 ============
 
-Check the :ref:`Installation guide <ignc>` for details of what package you have to install depending on your distribution
+Check the :ref:`Installation guide <ignc>` for details of what package you have to install depending, on your distribution.
 
 OneGate can be used with VMs running on :ref:`KVM, vCenter <context_overview>`, and :ref:`EC2 <context_ec2>`.
 
-Currently, OneGate is not supported for VMs instantiated in Azure, since the authentication token is not available inside these VMs. OneGate support for these drivers will be include in upcoming releases.
+Currently, OneGate is not supported for VMs instantiated in Azure, since the authentication token is not available inside these VMs. OneGate support for these drivers will be included in upcoming releases.
 
 Configuration
 =============
@@ -25,7 +25,7 @@ The OneGate configuration file can be found at ``/etc/one/onegate-server.conf``.
 * ``one_xmlrpc``: OpenNebula daemon host and port
 * ``host``: Host where OneGate will listen
 * ``port``: Port where OneGate will listen
-* ``ssl_server``: SSL proxy URL that serves the API (set if is being used)
+* ``ssl_server``: SSL proxy URL that serves the API (set if it is being used)
 
 **Log**
 
@@ -33,9 +33,9 @@ The OneGate configuration file can be found at ``/etc/one/onegate-server.conf``.
 
 **Auth**
 
-* ``auth``: Authentication driver for incomming requests.
+* ``auth``: Authentication driver for incoming requests.
 
-  * ``onegate``: based on token provided in the context
+  * ``onegate``: Based on token provided in the context
 
 * ``core_auth``: Authentication driver to communicate with OpenNebula core.
 
@@ -43,8 +43,8 @@ The OneGate configuration file can be found at ``/etc/one/onegate-server.conf``.
   * ``x509`` for x509 certificate encryption of tokens. For more information, visit the :ref:`OpenNebula Cloud Auth documentation <cloud_auth>`.
 
 * ``oneflow_server`` Endpoint where the OneFlow server is listening.
-* ``permissions`` By default OneGate exposes all the available API calls, each of the actions can be enabled/disabled in the server configuration.
-* ``restricted_attrs`` Attrs that cannot be modified when updating a VM template
+* ``permissions`` By default OneGate exposes all the available API calls. Each of the actions can be enabled/disabled in the server configuration.
+* ``restricted_attrs`` Attributes that cannot be modified when updating a VM template
 * ``restricted_actions`` Actions that cannot be performed on a VM
 
 This is the default file
@@ -134,13 +134,13 @@ To start and stop the server, use the ``opennebula-gate`` service:
 
     # systemctl start opennebula-gate
 
-Or use service in older Linux systems:
+Or use ``service`` in older Linux systems:
 
 .. prompt:: bash # auto
 
     # service opennebula-gate start
 
-.. warning:: By default, the server will only listen to requests coming from localhost. Change the ``:host`` attribute in ``/etc/one/onegate-server.conf`` to your server public IP, or 0.0.0.0 so onegate will listen on any interface.
+.. warning:: By default, the server will only listen to requests coming from localhost. Change the ``:host`` attribute in ``/etc/one/onegate-server.conf`` to your server public IP, or 0.0.0.0 so OneGate will listen on any interface.
 
 Inside ``/var/log/one/`` you will find new log files for the server:
 
@@ -158,28 +158,14 @@ Before your VMs can communicate with OneGate, you need to edit ``/etc/one/oned.c
 
     ONEGATE_ENDPOINT = "http://192.168.0.5:5030"
 
-At this point the service is ready, you can continue to the :ref:`OneGate usage documentation <onegate_usage>`.
+At this point the service is ready and you can continue to the :ref:`OneGate usage documentation <onegate_usage>`.
 
-Configuring a SSL Proxy
-=======================
+Configuring an SSL Proxy
+========================
 
-This is an example on how to configure Nginx as a ssl proxy for Onegate in Ubuntu.
+You can configure Nginx or lighttpd as an SSL proxy for OneGate similarly to the :ref:`setup for Sunstone <ss_proxy>`.
 
-Update your package lists and install Nginx:
-
-.. prompt:: bash $ auto
-
-    $ sudo apt-get update
-    $ sudo apt-get install nginx
-
-You should get an official signed certificate, but for the purpose of this example we will generate a self-signed SSL certificate:
-
-.. prompt:: bash $ auto
-
-    $ cd /etc/one
-    $ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/one/cert.key -out /etc/one/cert.crt
-
-Next you will need to edit the default Nginx configuration file or generate a new one. Change the ONEGATE_ENDPOINT variable with your own domain name.
+After installing Nginx and a certificate, edit the default Nginx configuration file or generate a new one similarly to this example. Change the ONEGATE_ENDPOINT variable to your own domain name.
 
 .. code::
 
@@ -218,14 +204,14 @@ Next you will need to edit the default Nginx configuration file or generate a ne
       }
     }
 
-Update ``/etc/one/oned.conf`` with the new OneGate endpoint
+Update ``/etc/one/oned.conf`` with the new OneGate endpoint.
 
 .. code::
 
     ONEGATE_ENDPOINT = "https://ONEGATE_ENDPOINT"
 
 
-Update ``/etc/one/onegate-server.conf`` with the new OneGate endpoint and uncomment the ``ssl_server`` parameter
+Update ``/etc/one/onegate-server.conf`` with the new OneGate endpoint and uncomment the ``ssl_server`` parameter:
 
 .. code::
 

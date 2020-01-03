@@ -1,7 +1,7 @@
 .. _docker_host_provision_with_docker_machine:
 
 ================================================================================
-Docker Hosts Provision with Docker Machine
+Docker Host Provisioning with Docker Machine
 ================================================================================
 
 Introduction
@@ -11,43 +11,43 @@ This guide shows how to provision and manage remote Docker Hosts with Docker Mac
 
 Prerequisites
 ================================================================================
-To follow this guide, you will need the following (see the Platform Notes to see the version certified):
+To follow this guide, you will need the following. (See the :ref:`Platform Notes <uspng>` to see the version certified).
 
     * Access to a fully working OpenNebula cloud running version 5.6 or later. You can check this by using any OpenNebula CLI command without parameters.
     * A client computer with Docker CLI (the daemon is not required) and Docker Machine installed.
     * Your OpenNebula Cloud must be accessible from your client computer.
-    * The OpenNebula Docker application available in the Marketplace should have been imported into the OpenNebula cloud, you can find more information at :ref:`Docker Appliance Configuration <docker_appliance_configuration>`.
+    * The OpenNebula Docker application available in the Marketplace should have been imported into the OpenNebula cloud. You can find more information at :ref:`Docker Appliance Configuration <docker_appliance_configuration>`.
 
-This guide shows how to specify all the required command line  attributes to create the Docker Engines. As an alternative you can specify a template registered in OpenNebula, in this case you can see all the available options at :ref:`Docker Machine Driver References <docker_machine_driver_reference>` section.
+This guide shows how to specify all the required command line  attributes to create the Docker Engines. As an alternative you can specify a template registered in OpenNebula. In this case you can see all the available options in the :ref:`Docker Machine Driver References <docker_machine_driver_reference>` section.
 
-Step 1 - Install Docker Machine OpenNebula Driver
+Step 1 — Install the Docker Machine OpenNebula Driver
 ================================================================================
 
 In order to install the Docker Machine OpenNebula Driver you just need to install the package `docker-machine-opennebula` available `here <https://opennebula.org/software/>`__ in your desktop.
 
-In case you already have it installed in the OpenNebula frontend (or any other host) you instead can copy the `docker-machine-driver-opennebula` file from the /usr/share/docker_machine path of the frontend into any folder of your desktop that is included in your $PATH.
+In case you already have it installed in the OpenNebula frontend (or any other host) you instead can copy the `docker-machine-driver-opennebula` file from the ``/usr/share/docker_machine`` path of the frontend into any folder on your desktop that is included in your $PATH.
 
 
-Step 2 - Configure Client Machine to Access the OpenNebula Cloud
+Step 2 — Configure the Client Machine to Access the OpenNebula Cloud
 ================================================================================
 
-It is assumed that you have a user with permissions to create / manage instances.
+It is assumed that you have a user with permissions to create/manage instances.
 
-Set up env variables ONE_AUTH to contain user:password and ONE_XMLRPC to point to the OpenNebula cloud:
+Set up environment variables ``ONE_AUTH`` to contain user:password and ``ONE_XMLRPC`` to point to the OpenNebula cloud:
 
 .. prompt:: bash # auto
 
     # export ONE_AUTH=~/.one/one_auth
     # export ONE_XMLRPC=https://<ONE FRONTEND>:2633/RPC2
 
-Step 3 - Use with vCenter
+Step 3 — Use with vCenter
 ================================================================================
 
-For vCenter hypervisor you will need to follow these steps to be able to use Docker Machine:
+For the vCenter hypervisor you will need to follow these steps to be able to use Docker Machine:
 
     * Make sure you have a network defined in vCenter to connect Docker to.
     * Create a template in vCenter with the desired capacity (CPU, Memory), a new hard disk (select the desired capacity) and new CD/DVD Drive (Datastore    ISO File) with the ISO of the selected OS. Make sure you check Connect At Power On. Do not specify a network.
-    * In OpenNebula you will need to import the template and the desired networks. Make sure you make the network type ipv4.
+    * In OpenNebula you will need to import the template and the desired networks. Make sure you make the network type IPv4.
 
 Step 4 - Start your First Docker Host
 ================================================================================
@@ -62,9 +62,9 @@ This command creates a VM in OpenNebula using $TEMPLATE_ID as the template and $
 
 Make sure the network attached to the template allows Docker Machine to connect to the VM.
 
-If you want to create a VM without using a template (only for KVM) you can take a look at "Not Using a Template" section from :ref:`Docker Machine Driver References <docker_machine_driver_reference>`.
+If you want to create a VM without using a template (only for KVM) you can take a look at the "Not Using a Template" section from the :ref:`Docker Machine Driver Reference <docker_machine_driver_reference>`.
 
-Step 5 - Interact with your Docker Engine
+Step 5 — Interact with your Docker Engine
 ================================================================================
 
 You can list the VMs deployed by docker machine:
@@ -100,7 +100,7 @@ Restart the remote host:
       NAME            ACTIVE   DRIVER       STATE     URL                        SWARM   DOCKER        ERRORS
       ubuntu-docker   -        opennebula   Running   tcp://192.168.122.3:2376           v18.04.0-ce
 
-Remove the remote host (it will remove the VM from OpenNebula):
+Remove the remote host (which will remove the VM from OpenNebula):
 
 .. prompt:: bash # auto
 
@@ -149,7 +149,7 @@ Connect to the host via SSH:
         CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
         787b15395f48        hello-world         "/hello"            16 seconds ago      Exited (0) 15 seconds ago                       upbeat_bardeen
 
-Activate the host, you can connect your Docker client to the remote host to run docker commands:
+Activate the host. You can connect your Docker client to the remote host to run Docker commands:
 
 .. prompt:: bash # auto
 
@@ -162,9 +162,9 @@ Activate the host, you can connect your Docker client to the remote host to run 
       787b15395f48        hello-world         "/hello"            6 minutes ago       Exited (0) 6 minutes ago                       upbeat_bardeen
 
 
-You can see how an "*" appears at the active field.
+You can see how ``*`` appears in the active field.
 
-Containers Orchestration Platforms
+Container Orchestration Platforms
 ================================================================================
 
 Swarm
@@ -175,9 +175,9 @@ Check the OpenNebula `blog post <https://opennebula.org/docker-swarm-with-openne
 Swarmkit / Swarm mode
 --------------------------------------------------------------------------------
 
-Check `Docker documentation <https://docs.docker.com/get-started/part4/#create-a-cluster>`__ to use Swarmkit / Swarm mode. If you have discovery issues, please check your multicast support is OK.
+Check the `Docker documentation <https://docs.docker.com/get-started/part4/#create-a-cluster>`__ to use Swarmkit/Swarm mode. If you have discovery issues, please check your multicast support is OK.
 
-As long as your VM template includes only one network, you should not even need to give --advertise-addr or --listen-addr
+As long as your VM template includes only one network, you should not even need to give ``--advertise-addr`` or ``--listen-addr``.
 
 Rancher
 --------------------------------------------------------------------------------

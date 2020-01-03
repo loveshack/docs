@@ -11,7 +11,7 @@ For Virtual Machines that are part of a Multi-VM Application (:ref:`OneFlow Serv
 OneGate Workflow Explained
 ==========================
 
-OneGate is a server that listens to http connections from the Virtual Machines. OpenNebula assigns an individual token to each VM instance, and Applications running inside the VM use this token to interact with the OneGate API. This token is generated using VM information and signed with the owner User template attribute TOKEN_PASSWORD. This password can be changed updating the User template, but tokens from existing VMs will not work anymore.
+OneGate is a server that listens for HTTP connections from the Virtual Machines. OpenNebula assigns an individual token to each VM instance, and Applications running inside the VM use this token to interact with the OneGate API. This token is generated using VM information and signed with the owner User template attribute TOKEN_PASSWORD. This password can be changed by updating the User template, but then tokens from existing VMs will not work anymore.
 
 |onegate_arch|
 
@@ -20,8 +20,8 @@ OneGate Usage
 
 First, the cloud administrator must configure and start the :ref:`OneGate server <onegate_configure>`.
 
-Setup the VM Template
----------------------
+Set Up the VM Template
+----------------------
 
 Your VM Template must set the ``CONTEXT/TOKEN`` attribute to ``YES``.
 
@@ -42,7 +42,7 @@ or check the OneGate checkbox in Sunstone:
 
 |onegate_context|
 
-When this Template is instantiated, OpenNebula will automatically add the ONEGATE_ENDPOINT context variable, and a token.txt will be placed in the :ref:`context cdrom <context_overview>`. This token.txt file is only accessible from inside the VM.
+When this Template is instantiated, OpenNebula will automatically add the ONEGATE_ENDPOINT context variable, and a ``token.txt`` will be placed in the :ref:`context cdrom <context_overview>`. This ``token.txt`` file is only accessible from inside the VM.
 
 .. code-block:: none
 
@@ -60,7 +60,7 @@ In vCenter this information is available in the extraConfig section of the VM me
 Using the OneGate Client inside the Guest VM
 --------------------------------------------
 
-A ruby client that implements the OneGate API is included in the official `OpenNebula context packages <https://github.com/OpenNebula/addon-context-linux>`__. This is a simple command line interface to interact with the OneGate server, it will handle the authentication and requests complexity.
+A ruby client that implements the OneGate API is included in the official `OpenNebula context packages <https://github.com/OpenNebula/addon-context-linux>`__. This is a simple command line interface to interact with the OneGate server. It will handle the authentication and request complexity.
 
 OneGate Client Usage
 --------------------
@@ -72,12 +72,12 @@ With the appropriate policies implemented in the Service, these mechanisms allow
 Self-Awareness
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are several actions available to retrieve information of the Virtual Machine and the Service it belongs to. A Virtual Machine can also retrieve information of other Virtual Machines that are part of the Service.
+There are several actions available to retrieve information on the Virtual Machine and the Service it belongs to. A Virtual Machine can also retrieve information on other Virtual Machines that are part of the Service.
 
 Retrieving Information of the VM
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-Using the ``onegate vm show`` command the information of the Virtual Machine will be retrieved. For a detailed version use the ``--json`` option and all the information will be returned in JSON format.
+Using the ``onegate vm show`` command, the information of the Virtual Machine will be retrieved. For a detailed version use the ``--json`` option and all the information will be returned in JSON format.
 
 If no argument is provided, the information of the current Virtual Machine will be retrieved. Alternatively, a VM ID can be provided to retrieve the information of a specific Virtual Machine.
 
@@ -116,7 +116,7 @@ Using the ``onegate service show`` command the information of the Service will b
 Updating the VM Information
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The Virtual Machine can update the information of itself or other Virtual Machine of the Service. This information can be retrieved from any of the Virtual Machines.
+The Virtual Machine can update the information on itself or other Virtual Machine of the Service. This information can be retrieved from any of the Virtual Machines.
 
 For example, the master Virtual Machine can change the ``ACTIVE`` attribute from one Virtual Machine to another one. Then, this information can be used to trigger any kind of action in the other Virtual Machine.
 
@@ -181,7 +181,7 @@ For example, to erase the ``ACTIVE`` attribute from Virtual Machine 9 you can ex
 Self-Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-There are several actions to adapt the Service to a given situation. Actions on any of the Virtual Machines can be performed individually. Also, the size of the Service can be customized just specifying a cardinality for each of the roles.
+There are several actions to adapt the Service to a given situation. Actions on any of the Virtual Machines can be performed individually. Also, the size of the Service can be customized just by specifying a cardinality for each of the roles.
 
 Performing actions on a VM
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -189,10 +189,10 @@ Performing actions on a VM
 The following actions can be performed in any of the Virtual Machines of the Service.
 
 * ``onegate vm resume``: Resumes the execution of the a saved VM. Valid states: STOPPED, SUSPENDED, UNDEPLOYED, POWEROFF
-* ``onegate vm stop``: Stops a running VM. The VM state is saved and transferred back to the front-end along with the disk files. Valid states: RUNNING
+* ``onegate vm stop``: Stops a running VM. The VM state is saved and transferred back to the front-end, along with the disk files. Valid states: RUNNING
 * ``onegate vm suspend``:  Saves a running VM. It is the same as ``onegate vm stop``, but the files are left in the remote machine to later restart the VM there (i.e. the resources are not freed and there is no need to re-schedule the VM). Valid states: RUNNING
-* ``onegate vm terminate``: Terminates the given VM. The VM life cycle will end. With --hard it unplugs the VM. Valid states: any except those with a pending driver response
-* ``onegate vm reboot``: Reboots the given VM, this is equivalent to execute the reboot command from the VM console. The VM will be ungracefully rebooted if --hard is used. Valid states: RUNNING
+* ``onegate vm terminate``: Terminates the given VM. The VM life cycle will end. With ``--hard`` it unplugs the VM. Valid states: any except those with a pending driver response
+* ``onegate vm reboot``: Reboots the given VM. This is equivalent to executing the reboot command from the VM console. The VM will be ungracefully rebooted if ``--hard`` is used. Valid states: RUNNING
 * ``onegate vm poweroff``: Powers off the given VM. The VM will remain in the poweroff state, and can be powered on with the ``onegate vm resume`` command. Valid states: RUNNING
 * ``onegate vm resched``: Sets the rescheduling flag for the VM. The VM will be moved to a different host based on the scheduling policies. Valid states: RUNNING, POWEROFF
 * ``onegate vm unresched``:  Unsets the rescheduling flag for the VM. Valid states: RUNNING, POWEROFF
@@ -207,7 +207,7 @@ The following actions can be performed in any of the Virtual Machines of the Ser
 Change Service cardinality
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-The number of Virtual Machines of a Service can be also modified from any of the Virtual Machines that have access to the OneGate Server. The Virtual Machines of Services are grouped in Roles and each Role has a cardinality (number of Virtual Machines). This cardinality can be increased or decreased, in case the given cardinality is lower than the current one, Virtual Machines will be terminated to meet the given number. If the cardinality is greater than the current one, new Virtual Machines will be instantiated using the VM Template associated to the Role.
+The number of Virtual Machines of a Service can be also modified from any of the Virtual Machines that have access to the OneGate Server. The Virtual Machines of Services are grouped into Roles, and each Role has a cardinality (number of Virtual Machines). This cardinality can be increased or decreased. In case the given cardinality is lower than the current one, Virtual Machines will be terminated to meet the given number. If the cardinality is greater than the current one, new Virtual Machines will be instantiated using the VM Template associated to the Role.
 
 .. code::
 
@@ -257,7 +257,7 @@ The contextualization cdrom should contain the ``context.sh`` and ``token.txt`` 
     # cat token.txt
     yCxieDUS7kra7Vn9ILA0+g==
 
-With that data, you can obtain the headers required for all the ONEGATE API methods:
+With those data, you can obtain the headers required for all the ONEGATE API methods:
 
 * **Headers**:
 
@@ -380,7 +380,7 @@ Self-configuration
           --header "X-ONEGATE-VMID: $VMID" \
           -d "{'cardinality' : 10}"
 
-* ``POST ${ONEGATE_ENDPOINT}/vms/${VM_ID}/action``: To perform an action on a specific VM of the Service. Supported actions (resume, stop, suspend, terminate, reboot, poweroff, resched, unresched, hold, release)
+* ``POST ${ONEGATE_ENDPOINT}/vms/${VM_ID}/action``: To perform an action on a specific VM of the Service. Supported actions: resume, stop, suspend, terminate, reboot, poweroff, resched, unresched, hold, release.
 
   .. prompt:: text $ auto
 
