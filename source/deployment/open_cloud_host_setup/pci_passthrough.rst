@@ -21,13 +21,13 @@ Machine Configuration (Hypervisor)
 Kernel Configuration
 ~~~~~~~~~~~~~~~~~~~~
 
-The kernel must be configured to support I/O MMU and to blacklist any driver that could be accessing the PCI's that we want to use in our VMs. The parameter to enable I/O MMU is:
+The kernel must be configured to support I/O MMU and to blacklist any driver that could be accessing the PCIs that we want to use in our VMs. The parameter to enable I/O MMU is:
 
 .. code::
 
     intel_iommu=on
 
-We also need to tell the kernel to load the ``vfio-pci`` driver and blacklist the drivers for the selected cards. For example, for nvidia GPUs we can use these parameters:
+We also need to tell the kernel to load the ``vfio-pci`` driver and blacklist the drivers for the selected cards. For example, for NVIDIA GPUs we can use these parameters:
 
 .. code::
 
@@ -37,7 +37,7 @@ We also need to tell the kernel to load the ``vfio-pci`` driver and blacklist th
 Loading vfio Driver in initrd
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The modules for vfio must be added to initrd. The list of modules are ``vfio vfio_iommu_type1 vfio_pci vfio_virqfd``. For example, if your system uses ``dracut`` add the file ``/etc/dracut.conf.d/local.conf`` with this line:
+The modules for vfio must be added to initrd. The list of modules are ``vfio vfio_iommu_type1 vfio_pci vfio_virqfd``. For example, if your system uses ``dracut``, add the file ``/etc/dracut.conf.d/local.conf`` with this line:
 
 .. code::
 
@@ -53,7 +53,7 @@ and regenerate ``initrd``:
 Driver Blacklisting
 ~~~~~~~~~~~~~~~~~~~
 
-The same blacklisting done in the kernel parameters must be done in the system configuration. ``/etc/modprobe.d/blacklist.conf`` for nvidia GPUs:
+The same blacklisting done in the kernel parameters must be done in the system configuration, ``/etc/modprobe.d/blacklist.conf``, for NVIDIA GPUs:
 
 .. code::
 
@@ -63,7 +63,7 @@ The same blacklisting done in the kernel parameters must be done in the system c
     alias nouveau off
     alias lbm-nouveau off
 
-Alongside this configuration vfio driver should be loaded passing the id of the PCI cards we want to attach to VMs. For example, for nvidia Grid K2 GPU we pass the id ``10de:11bf``. File ``/etc/modprobe.d/local.conf``:
+Alongside this configuration, the ``vfio`` driver should be loaded, passing the id of the PCI cards we want to attach to VMs. For example, for an NVIDIA Grid K2 GPU we pass the id ``10de:11bf``. File ``/etc/modprobe.d/local.conf``:
 
 .. code::
 
@@ -90,7 +90,7 @@ This script binds a card to vfio. It goes into ``/usr/local/bin/vfio-bind``:
             echo $vendor $device > /sys/bus/pci/drivers/vfio-pci/new_id
     done
 
-The configuration goes into ``/etc/sysconfig/vfio-bind``. The cards are specified with PCI addresses. Addresses can be retrieved with ``lspci`` command. Make sure to prepend the domain that is usually ``0000``. For example:
+The configuration goes into ``/etc/sysconfig/vfio-bind``. The cards are specified with PCI addresses. Addresses can be retrieved with the ``lspci`` command. Make sure to prepend the domain that is usually ``0000``. For example:
 
 .. code::
 
@@ -117,7 +117,7 @@ Here is a systemd script that executes the script. It can be written to ``/etc/s
 qemu Configuration
 ~~~~~~~~~~~~~~~~~~
 
-Now we need to give qemu access to the vfio devices for the groups assigned to the PCI cards. We can get a list of PCI cards and its I/O MMU group using this command:
+Now we need to give qemu access to the vfio devices for the groups assigned to the PCI cards. We can get a list of PCI cards and their I/O MMU group using this command:
 
 .. code::
 
@@ -139,7 +139,7 @@ In our example our cards have the groups 45, 46, 58 and 59 so we add this config
 Driver Configuration
 --------------------
 
-The only configuration needed is the filter for the monitoring probe that gets the list of PCI cards. By default, the probe doesn't list any cards from a host. To narrow the list, configuration can be changed in ``/var/lib/one/remotes/etc/im/kvm-probes.d/pci.conf``. Following configuration attributes are available:
+The only configuration needed is the filter for the monitoring probe that gets the list of PCI cards. By default, the probe doesn't list any cards from a host. To narrow the list, the configuration can be changed in ``/var/lib/one/remotes/etc/im/kvm-probes.d/pci.conf``. The following configuration attributes are available:
 
 +------------------+------------------------------------------------------------------------------------+
 | Parameter        | Description                                                                        |
@@ -219,7 +219,7 @@ The basic workflow is to inspect the host information, either in the CLI or in S
 CLI
 ~~~
 
-A new table in ``onehost show`` command gives us the list of PCI devices per host. For example:
+A new table in the ``onehost show`` command gives us the list of PCI devices per host. For example:
 
 .. code::
 
@@ -245,7 +245,7 @@ A new table in ``onehost show`` command gives us the list of PCI devices per hos
 - **TYPE**: Values describing the device. These are VENDOR:DEVICE:CLASS. These values are used when selecting a PCI device do to passthrough.
 - **NAME**: Name of the PCI device.
 
-To make use of one of the PCI devices in a VM a new option can be added selecting which device to use. For example this will ask for a ``Haswell-ULT HD Audio Controller``:
+To make use of one of the PCI devices in a VM, a new option can be added, selecting which device to use. For example this will ask for a ``Haswell-ULT HD Audio Controller``:
 
 .. code::
 
@@ -255,7 +255,7 @@ To make use of one of the PCI devices in a VM a new option can be added selectin
         CLASS  = "0403"
     ]
 
-The device can be also specified without all the type values. For example, to get any PCI Express Root Ports this can be added to a VM tmplate:
+The device can be also specified without all the type values. For example, to get any PCI Express Root Ports, this can be added to a VM template:
 
 .. code::
 
@@ -263,7 +263,7 @@ The device can be also specified without all the type values. For example, to ge
         CLASS = "0604"
     ]
 
-More than one ``PCI`` options can be added to attach more than one PCI device to the VM.
+More than one ``PCI`` option can be added to attach more than one PCI device to the VM.
 
 Sunstone
 ~~~~~~~~
@@ -282,11 +282,11 @@ Usage as Network Interfaces
 
 It is possible use a PCI device as a NIC interface directly in OpenNebula. In order to do so you will need to follow the configuration steps mentioned in this guide, namely changing the device driver.
 
-When defining a Network that will be used for PCI passthrough nics, please use either the ``dummy`` network driver or the ``802.1Q`` if you are using VLAN. In any case, type any random value into the ``BRIDGE`` field, and it will be ignored. For ``802.1Q`` you can also leave ``PHYDEV`` blank.
+When defining a Network that will be used for PCI passthrough NICs, please use either the ``dummy`` network driver or the ``802.1Q`` one if you are using a VLAN. In any case, type any random value into the ``BRIDGE`` field, and it will be ignored. For ``802.1Q`` you can also leave ``PHYDEV`` blank.
 
 The :ref:`context packages <context_overview>` support the configuration of the following attributes:
 
-* ``MAC``: It will change the mac address of the corresponding network interface to the MAC assigned by OpenNebula.
+* ``MAC``: It will change the MAC address of the corresponding network interface to the MAC assigned by OpenNebula.
 * ``IP``: It will assign an IPv4 address to the interface, assuming a ``/24`` netmask.
 * ``IPV6``: It will assign an IPv6 address to the interface, assuming a ``/128`` netmask.
 * ``VLAN_ID``: If present, it will create a tagged interface and assign the IPs to the tagged interface.
@@ -294,7 +294,7 @@ The :ref:`context packages <context_overview>` support the configuration of the 
 CLI
 ~~~
 
-When a ``PCI`` in a template contains the attribute ``TYPE="NIC"``, it will be treated as a ``NIC`` and OpenNebula will assign a MAC address, a VLAN_ID, an IP, etc, to the PCI device.
+When a ``PCI`` in a template contains the attribute ``TYPE="NIC"``, it will be treated as a ``NIC`` and OpenNebula will assign a MAC address, a VLAN_ID, an IP, etc. to the PCI device.
 
 This is an example of the PCI section of an interface that will be treated as a NIC:
 
@@ -309,12 +309,12 @@ This is an example of the PCI section of an interface that will be treated as a 
       VENDOR="8086" ]
 
 
-Note that the order of appearence of the ``PCI`` elements and ``NIC`` elements in the template is relevant. The will be mapped to nics in the order they appear, regardless if they're NICs of PCIs.
+Note that the order of appearance of the ``PCI`` elements and ``NIC`` elements in the template is relevant. They will be mapped to NICs in the order they appear, regardless if they're NICs or PCIs.
 
 Sunstone
 ~~~~~~~~
 
-In the Network tab, under advanced options check the **PCI Passthrough** option and fill in the PCI address. Use the rest of the dialog as usual by selecting a network from the table.
+In the Network tab, under advanced options, check the **PCI Passthrough** option and fill in the PCI address. Use the rest of the dialog as usual by selecting a network from the table.
 
 |image3|
 
